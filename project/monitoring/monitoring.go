@@ -79,10 +79,10 @@ func checkEnvironment(moduleArray [] string) {
 
 func main() {
 	//初始化定时器
-	//ticker := time.NewTicker(300 * time.Second)
-	ticker := time.NewTicker(20 * time.Second)
-	moduleArray := []string{"app-config1","auth"}
-	//moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","message","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
+	ticker := time.NewTicker(300 * time.Second)
+	//ticker := time.NewTicker(20 * time.Second)
+	//moduleArray := []string{"app-config1","auth"}
+	moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","message","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
 	for _ = range ticker.C {
 		checkEnvironment(moduleArray)
 	}

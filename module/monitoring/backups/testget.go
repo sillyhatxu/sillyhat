@@ -1,4 +1,4 @@
-package backups
+package main
 
 import (
 	"fmt"
