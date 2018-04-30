@@ -60,6 +60,7 @@ func check(moduleName string,environment string,url string) bool{
 
 func checkEnvironment(moduleArray [] string) {
 	for _, module := range moduleArray {
+		log.Printf("check module[%v] start",module)
 		//url := "http://cloud-dt.deja.fashion/style-tinder/health"
 		dtUrl := "http://cloud-dt.deja.fashion/" + module + "/health"
 		dpUrl := "http://cloud-dp.deja.fashion/" + module + "/health"
@@ -73,19 +74,23 @@ func checkEnvironment(moduleArray [] string) {
 		if !check("production",module,productionUrl){
 			curl(module,"production")
 		}
+		log.Printf("check module[%v] end",module)
 	}
 
 }
 
 func main() {
+	log.Println("monitoring begin")
 	//初始化定时器
-	ticker := time.NewTicker(300 * time.Second)
-	//ticker := time.NewTicker(20 * time.Second)
-	//moduleArray := []string{"app-config1","auth"}
-	moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","message","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
+	//ticker := time.NewTicker(300 * time.Second)
+	ticker := time.NewTicker(20 * time.Second)
+	moduleArray := []string{"app-config","auth"}
+	//moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","message","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
+	log.Printf("initial moduleArray : %v \n",moduleArray)
 	for _ = range ticker.C {
 		checkEnvironment(moduleArray)
 	}
+	log.Println("monitoring end")
 	//退出程序
 	os.Exit(0)
 }
