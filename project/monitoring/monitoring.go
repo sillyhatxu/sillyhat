@@ -83,12 +83,19 @@ func main() {
 	log.Println("monitoring begin")
 	//初始化定时器
 	//ticker := time.NewTicker(300 * time.Second)
-	ticker := time.NewTicker(20 * time.Second)
+	ticker := time.NewTicker(6 * time.Second)
 	moduleArray := []string{"app-config","auth"}
 	//moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","message","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
 	log.Printf("initial moduleArray : %v \n",moduleArray)
+	var liveStatus int = 0;
 	for _ = range ticker.C {
-		checkEnvironment(moduleArray)
+		log.Println("I'm alive.")
+		liveStatus++
+		if(liveStatus == 50){
+			liveStatus = 0
+			checkEnvironment(moduleArray)
+		}
+
 	}
 	log.Println("monitoring end")
 	//退出程序
