@@ -36,19 +36,26 @@ func curl(moduleName string,environment string) {
 }
 
 func check(moduleName string,environment string,url string) bool{
+	//log.Printf("check environment[%v]  module[%v] url[%v]\n",environment,moduleName,url)
 	res, err := http.Get(url)
-	//if err != nil {
-	//	panic(err.Error())
-	//}
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	//log.Println("Get")
 	body, err := ioutil.ReadAll(res.Body)
-	//if err != nil {
-	//	panic(err.Error())
-	//}
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	//log.Println("ReadAll")
 	var data map[string]interface{} // TopTracks
 	err = json.Unmarshal(body, &data)
-	//if err != nil {
-	//	panic(err.Error())
-	//}
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	//log.Println("Unmarshal")
 	if data["status"] == "UP" {
 		log.Printf("environment[%v]  module[%v] status is up \n",environment,moduleName)
 		return true
@@ -63,14 +70,14 @@ func checkEnvironment(moduleArray [] string) {
 		log.Printf("check module[%v] start",module)
 		//url := "http://cloud-dt.deja.fashion/style-tinder/health"
 		dtUrl := "http://cloud-dt.deja.fashion/" + module + "/health"
-		dpUrl := "http://cloud-dp.deja.fashion/" + module + "/health"
-		productionUrl := "http://cloud.deja.fashion/" + module + "/health"
 		if !check("dt",module,dtUrl){
 			curl(module,"dt")
 		}
+		dpUrl := "http://cloud-dp.deja.fashion/" + module + "/health"
 		if !check("dp",module,dpUrl){
 			curl(module,"dp")
 		}
+		productionUrl := "https://cloud.deja.fashion/" + module + "/health"
 		if !check("production",module,productionUrl){
 			curl(module,"production")
 		}
@@ -83,15 +90,15 @@ func main() {
 	log.Println("monitoring begin")
 	//初始化定时器
 	//ticker := time.NewTicker(300 * time.Second)
-	ticker := time.NewTicker(6 * time.Second)
-	moduleArray := []string{"app-config","auth"}
-	//moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","message","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
+	ticker := time.NewTicker(5 * time.Second)
+	//moduleArray := []string{"app-config","auth"}
+	moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","message","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
 	log.Printf("initial moduleArray : %v \n",moduleArray)
 	var liveStatus int = 0;
 	for _ = range ticker.C {
 		log.Println("I'm alive.")
 		liveStatus++
-		if(liveStatus == 50){
+		if(liveStatus == 60){
 			liveStatus = 0
 			checkEnvironment(moduleArray)
 		}
