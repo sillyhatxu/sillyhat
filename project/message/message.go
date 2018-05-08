@@ -10,7 +10,6 @@ import (
 	"github.com/bsm/sarama-cluster"
 	"time"
 	"github.com/Shopify/sarama"
-	"github.com/golang/glog"
 	"net/http"
 	"net/url"
 	"fmt"
@@ -95,16 +94,13 @@ func getConfigDir() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	configDir = dir + "/project/message/" + getConfigName()
-	//if enviroment == "dev"{
-	//	dir, err := os.Getwd()
-	//	if err != nil {
-	//		log.Fatal(err)
-	//	}
-	//	configDir = dir + "/project/message/" + getConfigName()
-	//}else{
-	//	configDir = "/go/" + getConfigName()
-	//}
+	//configDir = dir + "/" + getConfigName()
+	//configDir = dir + "/project/message/" + getConfigName()
+	if enviroment == "dev"{
+		configDir = dir + "/project/message/" + getConfigName()
+	}else{
+		configDir = dir + "/" + getConfigName()
+	}
 	log.Printf("configDir : [%v]\n",configDir)
 	return configDir
 }
@@ -217,6 +213,7 @@ func concumer(messageJson string){
 }
 
 func startKafka()  {
+	log.Println("start kafka service")
 	config := cluster.NewConfig()
 	config.Consumer.Return.Errors = true
 	config.Group.Return.Notifications = true
@@ -229,19 +226,19 @@ func startKafka()  {
 
 	c, err := cluster.NewConsumer(strings.Split(nodeList, ","), groupID, strings.Split(topicList, ","), config)
 	if err != nil {
-		glog.Errorf("Failed open consumer: %v", err)
+		log.Printf("Failed open consumer: %v", err)
 		return
 	}
 	defer c.Close()
 	go func() {
 		for err := range c.Errors() {
-			glog.Errorf("Error: %s\n", err.Error())
+			log.Printf("Error: %s\n", err.Error())
 		}
 	}()
 
 	go func() {
 		for note := range c.Notifications() {
-			glog.Infof("Rebalanced: %+v\n", note)
+			log.Printf("Rebalanced: %v \n", note)
 		}
 	}()
 
@@ -253,13 +250,13 @@ func startKafka()  {
 	}
 }
 
-
+//-enviroment=dt
 func main() {
 	flag.StringVar(&enviroment, "enviroment", "dev", "enviroment")
 	flag.Parse()
 	log.Printf("enviroment : %v \n",enviroment)
 	readConfig()
-	startHealthApi()
+	go startHealthApi()
 	startKafka()
 	//fmt.Printf("%d \n", time.Now().UnixNano() / int64(time.Millisecond))
 	//fmt.Printf("%d \n", time.Now().UnixNano() / int64(time.Microsecond))

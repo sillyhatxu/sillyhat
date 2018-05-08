@@ -11,7 +11,7 @@ COPY monitoring.go /go
 #RUN apt-get install -y ca-certificates#
 
 ##build linux version go file
-RUN CGO_ENABLED=0 GOOS=linux go build -a -tags monitoring -o build/monitoring -ldflags '-w' .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -tags monitoring.go -o build/monitoring -ldflags '-w' .
 
 # start from scratch
 FROM scratch
