@@ -20,6 +20,6 @@ LABEL MAINTAINER="heixiushamao@gmail.com"
 WORKDIR /go
 COPY --from=builder /go /go
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-CMD ["./message","-enviroment=dt"]
+CMD ["./message","-enviroment=dp"]
 #ENTRYPOINT ["./message"]
 

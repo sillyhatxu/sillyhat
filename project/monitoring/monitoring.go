@@ -92,7 +92,8 @@ func main() {
 	//ticker := time.NewTicker(300 * time.Second)
 	ticker := time.NewTicker(5 * time.Second)
 	//moduleArray := []string{"app-config","auth"}
-	moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","message","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
+	//moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","message","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
+	moduleArray := []string{"app-config","auth","cashback","customer","favourite","id-generator","inventory","invoice","legacy-db","ocb-syncer","ocr","order","payment","scheduler","shop","shopping-bag","stripe","style-tinder","wardrobe"}
 	log.Printf("initial moduleArray : %v \n",moduleArray)
 	var liveStatus int = 0;
 	for _ = range ticker.C {
