@@ -1,0 +1,24 @@
+FROM golang:1.10 AS builder
+
+WORKDIR /go
+COPY . /go
+
+RUN go get -u github.com/bsm/sarama-cluster
+RUN go get -u github.com/Shopify/sarama
+RUN go get -u github.com/go-sql-driver/mysql
+RUN go get -u github.com/sirupsen/logrus
+# 如果你想在Linux 64位系统下运行
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build main.go
+#WORKDIR /go
+#COPY monitoring.go /go
+#RUN CGO_ENABLED=0 GOOS=linux go build -a -tags monitoring -o build/monitoring -ldflags '-w' .
+FROM scratch
+LABEL MAINTAINER="heixiushamao@gmail.com"
+WORKDIR /go
+COPY --from=builder /go /go
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+#CMD ["./main","-enviroment=production"]
+#CMD ["./main","-enviroment=dp"]
+CMD ["./main","-enviroment=dt"]
+#ENTRYPOINT ["./message"]
+

@@ -18,6 +18,15 @@
 
 
 ````
+docker build -t golang.temporary .
+docker tag golang.temporary:latest 111909622691.dkr.ecr.ap-southeast-1.amazonaws.com/golang.temporary:dt-1.9
+docker push 111909622691.dkr.ecr.ap-southeast-1.amazonaws.com/golang.temporary:dt-1.9
+
+Golang build
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build main.go
+go build main.go
+go clean
+
 Build
 Docker Hub
 docker build -t xushikuan/sillyhat.golang.message .
