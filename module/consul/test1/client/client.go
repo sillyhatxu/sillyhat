@@ -38,7 +38,7 @@ func main() {
 		}
 
 		sendData(services["serverNode_1"])
-
+		break
 	}
 }
 
@@ -55,24 +55,24 @@ func sendData(service *consulapi.AgentService) {
 	buf := make([]byte, RECV_BUF_LEN)
 	log.Println("-------------------------------")
 	i := 0
-	for {
+	//for {
 		i++
 		log.Println("------------2-------------------")
 		msg := fmt.Sprintf("Hello World, %03d", i)
-		n, err := conn.Write([]byte(msg))
+		n, err := conn.Write([]byte(msg))//调用server
 		if err != nil {
 			println("Write Buffer Error:", err.Error())
-			break
+			//break
 		}
 
-		n, err = conn.Read(buf)
+		n, err = conn.Read(buf)//读取调用server返回信息
 		if err != nil {
 			println("Read Buffer Error:", err.Error())
-			break
+			//break
 		}
 		log.Println("get:", string(buf[0:n]))
 
 		//等一秒钟
-		time.Sleep(time.Second)
-	}
+		time.Sleep(10 * time.Second)
+	//}
 }

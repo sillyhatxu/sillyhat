@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func test(a int) string {
 	//fmt.Println(a)
@@ -12,7 +15,11 @@ func test(a int) string {
 	return fmt.Sprintf("%02d",a)
 }
 func main() {
-	for i:= 1;i < 5000 ; i++ {
-		fmt.Println(test(i))
-	}
+	//for i:= 1;i < 5000 ; i++ {
+	//	fmt.Println(test(i))
+	//}
+	fmt.Println(strings.Replace("/oink /oink oi /nk / ", " ", "ky", 2))
+	fmt.Println(strings.Replace("  /oink /oink oi /nk / ", " ", "_",-1))
+	fmt.Println(strings.Replace("  /oink /oink oi /nk / ", " ", "_",0))
+	fmt.Println(strings.Replace(`{"sizes":["One Size"],"measurements":["PTP","Waist","Length"],"values":[["21#INCH#"],["21#INCH#"],["20#INCH#"]]}`, "#INCH#", "\"",-1))
 }

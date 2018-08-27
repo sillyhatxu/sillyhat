@@ -82,7 +82,7 @@ func EchoServer(conn net.Conn) {
 		switch err {
 		case nil:
 			log.Println("get and echo:", "EchoServer "+string(buf[0:n]))
-			conn.Write(append([]byte("EchoServer "), buf[0:n]...))
+			conn.Write(append([]byte("EchoServer "), buf[0:n]...))//返回client
 		case io.EOF:
 			log.Printf("Warning: End of data: %s\n", err)
 			return
